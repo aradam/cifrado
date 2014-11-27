@@ -1,0 +1,67 @@
+import java.awt.*;
+import java.awt.event.*;
+// Java extension packages
+import javax.swing.*;
+public class TextAreaDemo extends JFrame {
+ private JTextArea textArea1, textArea2;
+ private JButton copyButton;
+ private JTextField textField1;
+ // set up GUI
+ public TextAreaDemo()
+ {
+ // super( "TextArea Demo" );
+Container container = getContentPane();
+container.setLayout( new FlowLayout() );
+String string = "Hendyla programas";
+// set up textArea1
+textArea1 = new JTextArea( string, 10, 15 );
+container.add( new JScrollPane( textArea1 ) );
+textField1 = new JTextField ("Enter shift");
+// set up copyButton
+copyButton = new JButton( "Encrypt!" );
+	 copyButton.addActionListener (
+ // anonymous inner class to handle copyButton event
+ new ActionListener() {
+ // set text in textArea2 to selected
+ // text from textArea1
+ public void actionPerformed( ActionEvent event )
+ {
+			 String cText = "";
+			 String plainText = textArea1.getText();
+			 		//
+			 		// prepare plaintext for encryption
+			 		//
+			 		for ( int i = 0; i < plainText.length(); i++ )
+			 		{
+			 			if ( plainText.charAt ( i ) != ' ' )
+			 			{
+			 				cText = cText + plainText.charAt ( i );
+			 			}
+			 		}
+			 		plainText = cText;
+			 		cText = "";
+			 		for ( int i = 0; i < plainText.length(); i++ ) // do whole string
+			 		{
+			 			cText = cText + ( char ) ( ( plainText.charAt ( i ) + Integer.parseInt(textField1.getText())) % 256 );
+			 		}
+textArea2.setText( cText );
+ }
+ } // end anonymous inner class
+); // end call to addActionListener
+container.add( copyButton );
+container.add(textField1);
+// set up textArea2
+textArea2 = new JTextArea( 10, 15 );
+textArea2.setEditable( false );
+container.add( new JScrollPane( textArea2 ) );
+setSize( 215, 415);
+setVisible( true );
+ }
+ // execute application
+ public static void main( String args[] )
+ {
+TextAreaDemo application = new TextAreaDemo();
+application.setDefaultCloseOperation(
+ JFrame.EXIT_ON_CLOSE );
+ }
+} // end class TextAreaDemo
